@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": "^8.3",
-        "filament/filament": "^3.3",
+        "filament/filament": "^4.1",
         "illuminate/contracts": "^10.0||^11.0||^12.0",
         "mydnic/volet": "^2.0",
         "spatie/laravel-package-tools": "^1.16"
