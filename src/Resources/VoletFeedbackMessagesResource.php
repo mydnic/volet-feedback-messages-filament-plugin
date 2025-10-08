@@ -2,32 +2,40 @@
 
 namespace Mydnic\VoletFeedbackMessagesFilamentPlugin\Resources;
 
-use Filament\Forms;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\KeyValue;
-use Filament\Forms\Form;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\ActionGroup;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Mydnic\Volet\Features\FeatureManager;
 use Mydnic\Volet\Models\FeedbackMessage;
-use Mydnic\VoletFeedbackMessagesFilamentPlugin\Resources\FeedbackMessageResource\Pages;
+use Mydnic\VoletFeedbackMessagesFilamentPlugin\Resources\FeedbackMessageResource\Pages\CreateMovieReview;
+use Mydnic\VoletFeedbackMessagesFilamentPlugin\Resources\FeedbackMessageResource\Pages\EditMovieReview;
+use Mydnic\VoletFeedbackMessagesFilamentPlugin\Resources\FeedbackMessageResource\Pages\ListMovieReviews;
 
 class VoletFeedbackMessagesResource extends Resource
 {
     protected static ?string $model = FeedbackMessage::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
 
     protected static ?string $modelLabel = 'Feedback Messages';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('category')
+        return $schema
+            ->components([
+                Select::make('category')
                     ->options(
                         collect(
                             app(FeatureManager::class)->getFeature('feedback-messages')
@@ -36,17 +44,17 @@ class VoletFeedbackMessagesResource extends Resource
                             ->mapWithKeys(fn ($category) => [$category['slug'] => $category['name']])
                     )
                     ->required(),
-                Forms\Components\Textarea::make('message'),
+                Textarea::make('message'),
                 KeyValue::make('user_info')
                     ->columnSpanFull(),
-                Forms\Components\Select::make('status')
+                Select::make('status')
                     ->options([
                         'new' => 'New',
                         'read' => 'Read',
                         'resolved' => 'Resolved',
                     ])
                     ->required(),
-                Forms\Components\DatePicker::make('created_at'),
+                DatePicker::make('created_at'),
             ]);
     }
 
@@ -54,10 +62,10 @@ class VoletFeedbackMessagesResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category')
+                TextColumn::make('category')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('message'),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('message'),
+                TextColumn::make('status')
                     ->sortable(),
             ])
             ->filters([
@@ -76,21 +84,21 @@ class VoletFeedbackMessagesResource extends Resource
                         'resolved' => 'Resolved',
                     ]),
             ])
-            ->actions([
+            ->recordActions([
                 ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
+                    EditAction::make(),
                     Action::make('Mark As Read')
                         ->action(fn (FeedbackMessage $record) => $record->markAsRead())
                         ->icon('heroicon-m-eye'),
                     Action::make('Mark As Resolved')
                         ->action(fn (FeedbackMessage $record) => $record->markAsResolved())
                         ->icon('heroicon-m-check'),
-                    Tables\Actions\DeleteAction::make(),
+                    DeleteAction::make(),
                 ]),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -105,9 +113,9 @@ class VoletFeedbackMessagesResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMovieReviews::route('/'),
-            'create' => Pages\CreateMovieReview::route('/create'),
-            'edit' => Pages\EditMovieReview::route('/{record}/edit'),
+            'index' => ListMovieReviews::route('/'),
+            'create' => CreateMovieReview::route('/create'),
+            'edit' => EditMovieReview::route('/{record}/edit'),
         ];
     }
 }
