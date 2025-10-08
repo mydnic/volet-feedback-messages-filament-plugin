@@ -2,6 +2,7 @@
 
 namespace Mydnic\VoletFeedbackMessagesFilamentPlugin\Resources\FeedbackMessageResource\Pages;
 
+use Filament\Actions\CreateAction;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Mydnic\VoletFeedbackMessagesFilamentPlugin\Resources\VoletFeedbackMessagesResource;
@@ -13,7 +14,7 @@ class ListMovieReviews extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }
