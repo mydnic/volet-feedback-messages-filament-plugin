@@ -31,6 +31,8 @@ class VoletFeedbackMessagesResource extends Resource
 
     protected static ?string $modelLabel = 'Feedback Messages';
 
+    protected static string|null|\UnitEnum $navigationGroup = 'Volet';
+
     public static function form(Schema $schema): Schema
     {
         return $schema
