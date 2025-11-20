@@ -66,6 +66,12 @@ class VoletFeedbackMessagesResource extends Resource
                     ->sortable(),
                 TextColumn::make('message'),
                 TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'new' => 'gray',
+                        'read' => 'warning',
+                        'resolved' => 'success',
+                    })
                     ->sortable(),
             ])
             ->filters([
