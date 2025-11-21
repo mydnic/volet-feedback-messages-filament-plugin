@@ -33,6 +33,13 @@ class VoletFeedbackMessagesResource extends Resource
 
     protected static string|null|\UnitEnum $navigationGroup = 'Volet';
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = (int) static::getModel()::where('status', 'new')->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
