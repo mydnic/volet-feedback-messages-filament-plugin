@@ -2,6 +2,10 @@
 
 All notable changes to `volet-feedback-messages-filament-plugin` will be documented in this file.
 
+## v2.0.2 - 2025-11-21
+
+Add Volet Navigation Group
+
 ## v2.0.1 - 2025-11-20
 
 Add Color to status column
