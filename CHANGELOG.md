@@ -2,6 +2,10 @@
 
 All notable changes to `volet-feedback-messages-filament-plugin` will be documented in this file.
 
+## v3.0.0 - 2026-01-21
+
+Update to Filament V5
+
 ## v2.0.3 - 2025-11-21
 
 Add Navigation badge to count new messages
